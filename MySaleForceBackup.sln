@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{44F0A0B0-B067-42CD-A363-16C163F92404}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Call-MySaleForceBackup", "test\Call-MySaleForceBackup\Call-MySaleForceBackup.csproj", "{21378946-2955-4357-89B0-077E557F610E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySaleForceBackup", "MySaleForceBackup\MySaleForceBackup.csproj", "{C9FE7BC3-8EF6-4833-9A9B-1B15F2EFDDE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21378946-2955-4357-89B0-077E557F610E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21378946-2955-4357-89B0-077E557F610E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21378946-2955-4357-89B0-077E557F610E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21378946-2955-4357-89B0-077E557F610E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9FE7BC3-8EF6-4833-9A9B-1B15F2EFDDE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9FE7BC3-8EF6-4833-9A9B-1B15F2EFDDE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9FE7BC3-8EF6-4833-9A9B-1B15F2EFDDE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9FE7BC3-8EF6-4833-9A9B-1B15F2EFDDE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21378946-2955-4357-89B0-077E557F610E} = {44F0A0B0-B067-42CD-A363-16C163F92404}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BAA6D3F-18AD-4ACF-9F44-53EC233EEF1F}
+	EndGlobalSection
+EndGlobal
