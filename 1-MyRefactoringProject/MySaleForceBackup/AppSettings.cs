@@ -32,7 +32,7 @@ namespace MySaleForceBackup
                 if (appSettings.Count == 0) return;
                 foreach (var key in appSettings.AllKeys)
                 {
-                    ValuePairs.Add(key, appSettings[key]);
+                    _valuePairs.Add(key, appSettings[key]);
                 }
             }
             catch (ConfigurationErrorsException e)
