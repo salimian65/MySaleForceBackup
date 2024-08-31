@@ -16,10 +16,12 @@ namespace SalesForceBackup
         private readonly IAppSettings _appSettings;
         private readonly IErrorHandler _errorHandler;
 
-        public AzureBlobUploader()
+        public AzureBlobUploader(IAppSettings appSettings, IErrorHandler errorHandler)
         {
-            _appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            _errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
+            //_appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            //_errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
+            _appSettings = appSettings;
+            _errorHandler = errorHandler;
         }
 
         /// <summary>

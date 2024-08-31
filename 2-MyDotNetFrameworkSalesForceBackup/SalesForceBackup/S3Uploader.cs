@@ -16,14 +16,12 @@ namespace SalesForceBackup
     {
         private readonly IAppSettings _appSettings;
         private readonly IErrorHandler _errorHandler;
-
-        /// <summary>
-        /// Initializes a new S3Uploader.
-        /// </summary>
-        public S3Uploader()
+        public S3Uploader(IAppSettings appSettings, IErrorHandler errorHandler)
         {
-            _appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            _errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
+            //_appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            //_errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
+            _appSettings = appSettings;
+            _errorHandler = errorHandler;
         }
 
         /// <summary>

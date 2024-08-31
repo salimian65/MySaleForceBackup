@@ -1,7 +1,9 @@
-﻿namespace SalesForceBackup.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace SalesForceBackup.Interfaces
 {
     public interface IDownloader
     {
-        string[] Download();
+      Task<string[]> Download();
     }
 }

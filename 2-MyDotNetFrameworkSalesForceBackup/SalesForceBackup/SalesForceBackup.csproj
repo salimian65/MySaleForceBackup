@@ -85,12 +85,14 @@
     <Compile Include="AppSettingKeys.cs" />
     <Compile Include="AzureBlobUploader.cs" />
     <Compile Include="Backup.cs" />
+    <Compile Include="AddressProvider.cs" />
     <Compile Include="ConsoleErrorHandler.cs" />
     <Compile Include="DataExportFile.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="Interfaces\IAppSettings.cs" />
     <Compile Include="Interfaces\IDownloader.cs" />
+    <Compile Include="Interfaces\IAddressProvider.cs" />
     <Compile Include="Interfaces\IErrorHandler.cs" />
     <Compile Include="Interfaces\IUploader.cs" />
     <Compile Include="IoC\Bootstrap.cs" />

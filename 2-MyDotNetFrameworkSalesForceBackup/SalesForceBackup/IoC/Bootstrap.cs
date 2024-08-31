@@ -12,8 +12,9 @@ namespace SalesForceBackup.IoC
             TinyIoCContainer.Current.Register<IErrorHandler, ConsoleErrorHandler>();//singleton
             TinyIoCContainer.Current.Register<IAppSettings, AppSettings>();//singleton
             TinyIoCContainer.Current.Register<IDownloader, SalesForceWebDownloader>();//singleton
+            TinyIoCContainer.Current.Register<IAddressProvider, AddressProvider>();//singleton
             TinyIoCContainer.Current.Register<Backup>(); //transiant
-
+       
             var appSettingConfig = ConfigurationManager.AppSettings;
             var isAws = String.Equals(appSettingConfig[AppSettingKeys.Uploader], Uploaders.Aws, StringComparison.CurrentCultureIgnoreCase);
             if (isAws)

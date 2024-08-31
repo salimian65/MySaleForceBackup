@@ -1,31 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Text;
 using SalesForceBackup.Interfaces;
 using TinyIoC;
 
 namespace SalesForceBackup
 {
-    /// <summary>
-    /// Reads the App.Config application settings.
-    /// </summary>
+
     public class AppSettings : IAppSettings
     {
-        private IErrorHandler _errorHandler;
-        private readonly Dictionary<string, string> ValuePairs = new Dictionary<string, string>();
+        private readonly IErrorHandler _errorHandler;
+        private readonly Dictionary<string, string> ValuePairs;
         public int age { get; set; }
-        /// <summary>
-        /// Instantiates a new AppSettings object.
-        /// </summary>
-        public AppSettings()
+
+        public AppSettings(IErrorHandler errorHandler)
         {
-            _errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
+            //  _errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
+            _errorHandler = errorHandler;
+            ValuePairs = new Dictionary<string, string>();
             ReadAllSettings();
         }
 
-        /// <summary>
-        /// Read the application settings from the App.config.
-        /// </summary>
+
+        public void AssignValues(IList<string> args)
+        {
+            for (var i = 0; i < args.Count(); i++)
+            {
+                switch (args[i])
+                {
+                    case "--help":
+                        DisplayHelp();
+                        Environment.Exit((int)Enums.ExitCode.Normal);
+                        break;
+                    case "-u":
+                        Set(AppSettingKeys.Username, args[++i]);
+                        break;
+                    case "-p":
+                        Set(AppSettingKeys.Password, args[++i]);
+                        break;
+                    case "-t":
+                        Set(AppSettingKeys.SecurityToken, args[++i]);
+                        break;
+                    case "-h":
+                        Set(AppSettingKeys.Host, args[++i]);
+                        break;
+                    case "-a":
+                        Set(AppSettingKeys.AwsAccessKey, args[++i]);
+                        break;
+                    case "-y":
+                        Set(AppSettingKeys.AzureAccountName, args[++i]);
+                        break;
+                    case "-z":
+                        Set(AppSettingKeys.AzureSharedKey, args[++i]);
+                        break;
+                    case "-s":
+                        Set(AppSettingKeys.AwsSecretKey, args[++i]);
+                        break;
+                }
+            }
+        }
+
+        public string Get(string key)
+        {
+            string value;
+            var IsSuccuessful = ValuePairs.TryGetValue(key, out value);
+            IsSuccuessfulGetValue(IsSuccuessful, key);
+            return value;
+        }
+
+        public void Set(string key, string value)
+        {
+            if (ValuePairs.ContainsKey(key))
+            {
+                ValuePairs.Remove(key);
+            }
+            ValuePairs.Add(key, value);
+        }
+
         private void ReadAllSettings()
         {
             try
@@ -46,36 +100,36 @@ namespace SalesForceBackup
 
         }
 
-        /// <summary>
-        /// Gets the value of an Application Setting based on the key.
-        /// </summary>
-        /// <param name="key">The application setting to retrieve.</param>
-        /// <returns>The value of the key, or a null string if it doesn't exist.</returns>
-        public string Get(string key)
+        private  void DisplayHelp()
         {
-            string value;
-            var IsSuccuessful = ValuePairs.TryGetValue(key, out value);
-           /// TODO check useCookies = false
-            if (!IsSuccuessful)
+            var file = AppDomain.CurrentDomain.FriendlyName;
+            var name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            var sb = new StringBuilder(1024);
+            using (var sr = new StringWriter(sb))
             {
-                throw new ConfigurationErrorsException("sssss");
+                sr.WriteLine("{0} version {1}", name, version);
+                sr.WriteLine("");
+                sr.WriteLine("Usage: {0} [-hupasyz]", file);
+                sr.WriteLine("");
+                sr.WriteLine("Options:");
+                sr.WriteLine("\t-h or --help\tDisplays this help text");
+                sr.WriteLine("\t-u \t\tUsername for SalesForce");
+                sr.WriteLine("\t-p \t\tPassword for SalesForce");
+                sr.WriteLine("\t-a \t\tAWS access key");
+                sr.WriteLine("\t-s \t\tAWS secret key");
+                sr.WriteLine("\t-y \t\tAzure account name");
+                sr.WriteLine("\t-z \t\tAzure shared key");
             }
-            return value;
+            Console.Write(sb.ToString());
         }
 
-        /// <summary>
-        /// Sets the value of an Application Setting.
-        /// </summary>
-        /// <param name="key">The key of the application setting.</param>
-        /// <param name="value">The new value of the key.</param>
-        /// <remarks>The key will be created if it does not already exist.</remarks>
-        public void Set(string key, string value)
+        private void IsSuccuessfulGetValue(bool IsSuccuessful, string key)
         {
-            if (ValuePairs.ContainsKey(key))
+            if (!IsSuccuessful)
             {
-                ValuePairs.Remove(key);
+                throw new ConfigurationErrorsException(String.Format("AppSettings cannot find corresponding value for {0} key", key));
             }
-            ValuePairs.Add(key, value);
         }
     }
 }
