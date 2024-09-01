@@ -4,6 +4,6 @@ namespace SalesForceBackup.Interfaces
 {
     public interface IDownloader
     {
-      Task<string[]> Download();
+        Task<string[]> Download();
     }
 }

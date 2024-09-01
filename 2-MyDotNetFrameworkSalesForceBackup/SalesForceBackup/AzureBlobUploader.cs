@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using Microsoft.WindowsAzure.Storage.Auth;
+﻿using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SalesForceBackup.Interfaces;
-using TinyIoC;
+using System;
+using System.IO;
 
 namespace SalesForceBackup
 {
@@ -34,7 +33,7 @@ namespace SalesForceBackup
             var accountName = _appSettings.Get(AppSettingKeys.AzureAccountName);
             var accountKey = _appSettings.Get(AppSettingKeys.AzureSharedKey);
             var containerName = _appSettings.Get(AppSettingKeys.AzureContainer);
-            var blobName = String.Join("/", new[] {_appSettings.Get(AppSettingKeys.AzureFolder), Path.GetFileName(file)});
+            var blobName = String.Join("/", new[] { _appSettings.Get(AppSettingKeys.AzureFolder), Path.GetFileName(file) });
 
             try
             {

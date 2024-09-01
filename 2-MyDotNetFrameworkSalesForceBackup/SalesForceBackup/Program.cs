@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using SalesForceBackup.Interfaces;
+﻿using SalesForceBackup.Interfaces;
 using SalesForceBackup.IoC;
+using System;
+using System.Threading.Tasks;
 using TinyIoC;
 
 namespace SalesForceBackup
@@ -20,13 +20,13 @@ namespace SalesForceBackup
                     await backup.Run(args);
                 }
 
-                Environment.Exit((int)Enums.ExitCode.Normal);
+                Environment.Exit((int)ExitCode.Normal);
             }
             catch (Exception ex)
             {
                 var _errorHandler = TinyIoCContainer.Current.Resolve<IErrorHandler>();
                 _errorHandler.HandleError(ex);
-                Environment.Exit((int)Enums.ExitCode.Unknown);
+                Environment.Exit((int)ExitCode.Unknown);
             }
         }
     }

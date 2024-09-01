@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SalesForceBackup.Interfaces;
+using SalesForceBackup.SFDC;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-using SalesForceBackup.Interfaces;
-using SalesForceBackup.SFDC;
 using System.Threading.Tasks;
 
 namespace SalesForceBackup
@@ -122,7 +122,7 @@ namespace SalesForceBackup
 
                 using (HttpResponseMessage response = await client.SendAsync(message, HttpCompletionOption.ResponseHeadersRead))
                 using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
-                 {
+                {
                     using (Stream fileStream = File.Open(dataExportFile.FileName, FileMode.Create))
                     {
                         await streamToReadFrom.CopyToAsync(fileStream);

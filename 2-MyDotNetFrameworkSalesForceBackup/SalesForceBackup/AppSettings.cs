@@ -1,11 +1,10 @@
-﻿using System;
+﻿using SalesForceBackup.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SalesForceBackup.Interfaces;
-using TinyIoC;
 
 namespace SalesForceBackup
 {
@@ -33,7 +32,7 @@ namespace SalesForceBackup
                 {
                     case "--help":
                         DisplayHelp();
-                        Environment.Exit((int)Enums.ExitCode.Normal);
+                        Environment.Exit((int)ExitCode.Normal);
                         break;
                     case "-u":
                         Set(AppSettingKeys.Username, args[++i]);
@@ -95,12 +94,12 @@ namespace SalesForceBackup
             catch (ConfigurationErrorsException e)
             {
                 Console.WriteLine("Error reading app settings");
-                _errorHandler.HandleError(e, (int)Enums.ExitCode.ConfigurationError);
+                _errorHandler.HandleError(e, (int)ExitCode.ConfigurationError);
             }
 
         }
 
-        private  void DisplayHelp()
+        private void DisplayHelp()
         {
             var file = AppDomain.CurrentDomain.FriendlyName;
             var name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;

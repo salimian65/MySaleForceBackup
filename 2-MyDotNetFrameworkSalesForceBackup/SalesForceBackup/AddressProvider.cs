@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SalesForceBackup.Interfaces;
+using System;
 using System.Globalization;
 using System.IO;
-using SalesForceBackup.Interfaces;
 
 namespace SalesForceBackup
 {
@@ -16,10 +16,10 @@ namespace SalesForceBackup
             _errorHandler = errorHandler;
         }
 
-        
+
         public Uri SalesForceBaseAddress()
         {
-           return new Uri(String.Format("{0}://{1}", _appSettings.Get(AppSettingKeys.Scheme), _appSettings.Get(AppSettingKeys.Host)));
+            return new Uri(String.Format("{0}://{1}", _appSettings.Get(AppSettingKeys.Scheme), _appSettings.Get(AppSettingKeys.Host)));
         }
 
         public string SalesForceSaveAddress(string fileName)
