@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace SalesForceBackup.Interfaces
 {
@@ -7,5 +8,7 @@ namespace SalesForceBackup.Interfaces
         Uri SalesForceBaseAddress();
 
         string SalesForceSaveAddress(string fileName);
+
+        string SalesForceUrlFormater(Match match);
     }
 }

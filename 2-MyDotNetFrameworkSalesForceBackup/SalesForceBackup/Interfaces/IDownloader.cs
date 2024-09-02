@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SalesForceBackup.Interfaces
 {
     public interface IDownloader
     {
-        Task<string[]> Download();
+        Task<List<string>> Download();
     }
 }

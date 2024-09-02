@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace SalesForceBackup
 {
@@ -27,5 +28,9 @@ namespace SalesForceBackup
             return String.Join(Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture), new[] { Environment.CurrentDirectory, fileName });
         }
 
+        public string SalesForceUrlFormater(Match match)
+        {
+            return String.Format("{0}{1}", _appSettings.Get(AppSettingKeys.DownloadPage), match.ToString().Replace("&amp;", "&"));
+        }
     }
 }

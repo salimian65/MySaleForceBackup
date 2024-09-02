@@ -12,7 +12,7 @@ namespace SalesForceBackup
 
         public void HandleError(Exception e)
         {
-            HandleError(e, (int)Enums.ExitCode.Unknown);
+            HandleError(e, (int)ExitCode.Unknown);
         }
 
 

@@ -30,8 +30,8 @@ namespace SalesForceBackup
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-
-        public async Task<string[]> Download()
+        //public string[] Download()
+        public async Task<List<string>> Download()
         {
             var files = new List<string>();
             // var baseAddress =  new Uri(String.Format("{0}://{1}", _appSettings.Get(AppSettingKeys.Scheme), _appSettings.Get(AppSettingKeys.Host)));
@@ -61,7 +61,10 @@ namespace SalesForceBackup
             //{
             //    _errorHandler.HandleError(e);
             //}
-            return files.ToArray();
+           
+            //return files.ToArray();
+            return files;
+
         }
 
         private string LogIn()
@@ -82,21 +85,11 @@ namespace SalesForceBackup
         }
 
         private async Task<List<DataExportFile>> DownloadListOfExportFiles(string sessionId)
-        {
-            List<DataExportFile> result = new List<DataExportFile>();
-
+        { 
             var page = await DownloadWebpage(_appSettings.Get(AppSettingKeys.DataExportPage), sessionId);
-            var regex = new Regex(_appSettings.Get(AppSettingKeys.FilenamePattern), RegexOptions.IgnoreCase);
-            var matches = regex.Matches(page.Content.ReadAsStringAsync().Result);
-            foreach (Match match in matches)
-            {
-                var fileName = match.Groups[1].ToString().Split(new[] { '&' })[0];
-                var url = String.Format("{0}{1}", _appSettings.Get(AppSettingKeys.DownloadPage), match.ToString().Replace("&amp;", "&"));
-                result.Add(new DataExportFile(fileName, url.Substring(0, url.Length - 1)));
-            }
-            return result;
+            var matches = GetMatchingItems(page);
+            return GetExportFiles(matches);
         }
-
 
         private async Task<HttpResponseMessage> DownloadWebpage(string url, string sessionId)
         {
@@ -111,6 +104,25 @@ namespace SalesForceBackup
             }
         }
 
+        private MatchCollection GetMatchingItems(HttpResponseMessage page)
+        {
+            var regex = new Regex(_appSettings.Get(AppSettingKeys.FilenamePattern), RegexOptions.IgnoreCase);
+            var matches = regex.Matches(page.Content.ReadAsStringAsync().Result);
+            return matches;
+        }
+
+        private List<DataExportFile> GetExportFiles(MatchCollection matches)
+        {
+            List<DataExportFile> result = new List<DataExportFile>();
+            foreach (Match match in matches)
+            {
+                var fileName = match.Groups[1].ToString().Split(new[] { '&' })[0];
+               // var url = String.Format("{0}{1}", _appSettings.Get(AppSettingKeys.DownloadPage), match.ToString().Replace("&amp;", "&"));
+                var url = _addressProvider.SalesForceUrlFormater(match);
+                result.Add(new DataExportFile(fileName, url.Substring(0, url.Length - 1)));
+            }
+            return result;
+        }
 
         private async System.Threading.Tasks.Task DownloadExportFile(DataExportFile dataExportFile, Uri baseAddress, string sessionId)
         {

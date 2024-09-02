@@ -26,10 +26,10 @@ namespace SalesForceBackup
         /// <summary>
         /// Uploads a file to S3.
         /// </summary>
-        /// <param name="file">The full filename and path of the file to upload.</param>
-        public void Upload(string file)
+        /// <param name="filePath">The full filename and path of the file to upload.</param>
+        public void Upload(string filePath)
         {
-            var filename = Path.GetFileName(file);
+            var filename = Path.GetFileName(filePath);
             try
             {
                 var credentials = new BasicAWSCredentials(_appSettings.Get(AppSettingKeys.AwsAccessKey), _appSettings.Get(AppSettingKeys.AwsSecretKey));
@@ -40,22 +40,23 @@ namespace SalesForceBackup
                     {
                         BucketName = _appSettings.Get(AppSettingKeys.S3Bucket),
                         Key = String.Join("/", new[] { _appSettings.Get(AppSettingKeys.S3Folder), filename }),
-                        FilePath = file
+                        FilePath = filePath
                     };
                     Console.WriteLine("Uploading {0} to AWS S3...", filename);
                     client.PutObject(request);
                 }
             }
+            catch (AmazonS3Exception e) when (e.ErrorCode != null && (e.ErrorCode.Equals("InvalidAccessKeyId") || e.ErrorCode.Equals("InvalidSecurity")))
+            {
+
+                _errorHandler.HandleError(e, (int)ExitCode.AwsCredentials, "Check the provided AWS Credentials");
+
+            }
             catch (AmazonS3Exception e)
             {
-                if (e.ErrorCode != null && (e.ErrorCode.Equals("InvalidAccessKeyId") || e.ErrorCode.Equals("InvalidSecurity")))
-                {
-                    _errorHandler.HandleError(e, (int)Enums.ExitCode.AwsCredentials, "Check the provided AWS Credentials");
-                }
-                else
-                {
-                    _errorHandler.HandleError(e, (int)Enums.ExitCode.AwsS3Error, String.Format("Error occurred. Message:'{0}' when writing an object", e.Message));
-                }
+
+                _errorHandler.HandleError(e, (int)ExitCode.AwsS3Error, String.Format("Error occurred. Message:'{0}' when writing an object", e.Message));
+
             }
         }
     }

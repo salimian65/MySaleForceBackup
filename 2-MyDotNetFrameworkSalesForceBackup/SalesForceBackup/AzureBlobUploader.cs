@@ -26,14 +26,15 @@ namespace SalesForceBackup
         /// <summary>
         /// Uploads a file to Azure Blob.
         /// </summary>
-        /// <param name="file">The full filename and path of the file to upload.</param>
-        public void Upload(string file)
+        /// <param name="filePath">The full filename and path of the file to upload.</param>
+        public void Upload(string filePath)
         {
             var blobEndpoint = new Uri(_appSettings.Get(AppSettingKeys.AzureBlobEndpoint));
             var accountName = _appSettings.Get(AppSettingKeys.AzureAccountName);
             var accountKey = _appSettings.Get(AppSettingKeys.AzureSharedKey);
             var containerName = _appSettings.Get(AppSettingKeys.AzureContainer);
-            var blobName = String.Join("/", new[] { _appSettings.Get(AppSettingKeys.AzureFolder), Path.GetFileName(file) });
+            ///TODO use AddressProvider
+            var blobName = String.Join("/", new[] { _appSettings.Get(AppSettingKeys.AzureFolder), Path.GetFileName(filePath) });
 
             try
             {
@@ -41,12 +42,14 @@ namespace SalesForceBackup
                 var container = blobClient.GetContainerReference(containerName);
                 container.CreateIfNotExists();
                 var blob = container.GetBlockBlobReference(blobName);
-                Console.WriteLine("Uploading {0} to Azure...", Path.GetFileName(file));
-                blob.UploadFromFile(file, FileMode.OpenOrCreate);
+                Console.WriteLine("Uploading {0} to Azure...", Path.GetFileName(filePath));
+                blob.UploadFromFile(filePath, FileMode.OpenOrCreate);
             }
             catch (Exception e)
             {
-                _errorHandler.HandleError(e, (int)Enums.ExitCode.AzureError, "There was an error uploading the file to Azure.");
+                //TODO depend on business 
+                _errorHandler.HandleError(e, (int)ExitCode.AzureError, "There was an error uploading the file to Azure.");
+                // throw;
             }
         }
     }
