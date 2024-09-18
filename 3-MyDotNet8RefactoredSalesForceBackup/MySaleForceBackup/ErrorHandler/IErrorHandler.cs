@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MySaleForceBackup.Interfaces
+﻿namespace MySaleForceBackup.Interfaces
 {
     /// <summary>
     /// Interface to handle application exceptions.

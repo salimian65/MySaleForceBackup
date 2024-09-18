@@ -1,32 +1,34 @@
 ﻿using Serilog;
 using MySaleForceBackup.Interfaces;
+using System.Threading.Channels;
 
 namespace MySaleForceBackup
 {
     internal class Bootstrap
     {
         private readonly IConfiguration configuration;
+        private readonly string[] args;
         private readonly IServiceCollection services;
-        private readonly string[] _args;
+  
 
         public Bootstrap(IServiceCollection services, IConfiguration configuration, string[] args)
         {
             Log.Information("Bootstrap starting ...");
             this.services = services;
             this.configuration = configuration;
-
-            _args = configuration.GetValue<string[]>("args");
+            this.args = args;
+            this.args = configuration.GetValue<string[]>("args");
         }
 
         public void WireUp()
         {
             services.AddTransient<IErrorHandler, ConsoleErrorHandler>();
-            services.AddScoped<IDownloader, SalesForceWebDownloader>();
-            services.AddScoped<Backup>();
+            services.AddTransient<IDownloader, SalesForceWebDownloader>();
+            services.AddTransient<Backup>();
             services.AddSingleton<IAppSettings, AppSettings>();
             services.AddSingleton<MyApp>();
             services.AddHttpClient();
-
+            services.AddSingleton(Channel.CreateUnbounded<string>());
             var appSettingConfig = System.Configuration.ConfigurationManager.AppSettings;
             var isAws = String.Equals(appSettingConfig[AppSettingKeys.Uploader], Uploaders.Aws, StringComparison.CurrentCultureIgnoreCase);
             if (isAws)

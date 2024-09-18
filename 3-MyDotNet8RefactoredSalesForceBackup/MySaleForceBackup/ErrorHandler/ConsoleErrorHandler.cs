@@ -1,5 +1,4 @@
-﻿using System;
-using MySaleForceBackup.Interfaces;
+﻿using MySaleForceBackup.Interfaces;
 using SalesForceBackup;
 
 namespace MySaleForceBackup

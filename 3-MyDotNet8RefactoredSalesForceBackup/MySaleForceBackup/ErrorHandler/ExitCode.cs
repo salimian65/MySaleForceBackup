@@ -1,4 +1,4 @@
-﻿namespace SalesForceBackup
+﻿namespace MySaleForceBackup
 {
     public enum ExitCode
     {

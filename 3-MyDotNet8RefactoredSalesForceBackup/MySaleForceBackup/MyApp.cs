@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MySaleForceBackup.Interfaces;
+﻿using MySaleForceBackup.Interfaces;
 
 namespace MySaleForceBackup
 {
@@ -10,7 +9,7 @@ namespace MySaleForceBackup
         private readonly IServiceProvider _serviceProvider;
         private readonly IAppSettings _appSettings;
 
-        public MyApp(ILogger<MyApp> logger, IConfiguration config, AppSettings appSettings, IServiceProvider serviceProvider)
+        public MyApp(ILogger<MyApp> logger, IConfiguration config, IAppSettings appSettings, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _config = config;
